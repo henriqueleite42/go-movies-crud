@@ -7,9 +7,11 @@ import (
 	"go-movies-crud/src/ltypes"
 )
 
-func GetMovies(movies []ltypes.Movie) func(w http.ResponseWriter, r *http.Request) {
+func GetMovies(moviesDatabase *ltypes.MoviesDatabase) func(w http.ResponseWriter, r *http.Request) {
 	return func (w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
+
+		movies := moviesDatabase.Find()
 
 		json.NewEncoder(w).Encode(movies)
 	}

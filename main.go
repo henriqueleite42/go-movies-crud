@@ -7,20 +7,22 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"go-movies-crud/src/data"
+	"go-movies-crud/src/ltypes"
 	"go-movies-crud/src/routes"
 )
 
 func main() {
 	r := mux.NewRouter()
 
-	movies := data.GetMovies()
+	var moviesDatabase ltypes.MoviesDatabase
 
-	r.HandleFunc("/movies", routes.GetMovies(movies)).Methods("GET")
-	r.HandleFunc("/movies/{id}", routes.GetMovie(movies)).Methods("GET")
-	r.HandleFunc("/movies", routes.CreateMovie(movies)).Methods("POST")
-	r.HandleFunc("/movies/{id}", routes.EditMovie(movies)).Methods("PUT")
-	r.HandleFunc("/movies/{id}", routes.DeleteMovie(movies)).Methods("DELETE")
+	moviesDatabase.NewMoviesDatabase()
+
+	r.HandleFunc("/movies", routes.GetMovies(&moviesDatabase)).Methods("GET")
+	r.HandleFunc("/movies/{id}", routes.GetMovie(&moviesDatabase)).Methods("GET")
+	r.HandleFunc("/movies", routes.CreateMovie(&moviesDatabase)).Methods("POST")
+	r.HandleFunc("/movies/{id}", routes.EditMovie(&moviesDatabase)).Methods("PUT")
+	r.HandleFunc("/movies/{id}", routes.DeleteMovie(&moviesDatabase)).Methods("DELETE")
 
 	fmt.Printf("Starting server at port 8080\n")
 

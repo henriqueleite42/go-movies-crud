@@ -9,7 +9,7 @@ import (
 	"go-movies-crud/src/ltypes"
 )
 
-func CreateMovie(movies []ltypes.Movie) func(w http.ResponseWriter, r *http.Request) {
+func CreateMovie(moviesDatabase *ltypes.MoviesDatabase) func(w http.ResponseWriter, r *http.Request) {
 	return func (w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
@@ -18,7 +18,7 @@ func CreateMovie(movies []ltypes.Movie) func(w http.ResponseWriter, r *http.Requ
 
 		movie.ID = strconv.Itoa(rand.Intn(100000000))
 
-		movies = append(movies, movie)
+		moviesDatabase.Add(movie)
 
 		json.NewEncoder(w).Encode(movie)
 	}
